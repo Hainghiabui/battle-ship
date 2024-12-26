@@ -69,9 +69,12 @@ function addCellClickListeners() {
 }
 
 // Hàm tìm các ô có xác suất cao nhất
-function findTopShots(board, shipSizes, topN = 3) {
+function findTopShots(board, remainingShips, topN = 3) {
+  const rows = board.length;
+  const cols = board[ 0 ].length;
   const probability = Array.from({ length: rows }, () => Array(cols).fill(0));
 
+  // Kiểm tra xem có thể đặt tàu tại vị trí (x, y) với chiều dài và hướng cụ thể không
   function canPlaceShip(x, y, length, isHorizontal) {
     for (let i = 0; i < length; i++) {
       const nx = x + (isHorizontal ? 0 : i);
@@ -83,6 +86,7 @@ function findTopShots(board, shipSizes, topN = 3) {
     return true;
   }
 
+  // Thêm xác suất cho các vị trí có thể đặt tàu
   function addShipProbability(x, y, length, isHorizontal) {
     for (let i = 0; i < length; i++) {
       const nx = x + (isHorizontal ? 0 : i);
@@ -104,22 +108,21 @@ function findTopShots(board, shipSizes, topN = 3) {
       const nx = row + dx;
       const ny = col + dy;
 
-      // Tăng xác suất nếu ô đó hợp lệ và chưa bắn
       if (nx >= 0 && nx < rows && ny >= 0 && ny < cols && board[ nx ][ ny ] === 0) {
-        probability[ nx ][ ny ] += 10; // Tăng trọng số cho các ô lân cận
+        probability[ nx ][ ny ] += 10; // Tăng trọng số cao cho ô lân cận
       }
     }
   }
 
-  // Thêm xác suất cho từng vị trí trên bảng
-  for (const ship of shipSizes) {
+  // Thêm xác suất dựa trên các tàu còn lại
+  for (const ship of remainingShips) {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
         if (board[ i ][ j ] === -1) {
-          // Nếu bắn trúng, tăng xác suất cho các ô lân cận
+          // Nếu bắn trúng, tăng trọng số cho các ô lân cận
           addAdjacentProbability(i, j);
         } else if (board[ i ][ j ] === 0) {
-          // Nếu chưa bắn, tính toán xác suất thông thường
+          // Nếu chưa bắn, tính toán xác suất dựa trên khả năng đặt tàu
           if (canPlaceShip(i, j, ship, true)) addShipProbability(i, j, ship, true);
           if (canPlaceShip(i, j, ship, false)) addShipProbability(i, j, ship, false);
         }
@@ -141,6 +144,7 @@ function findTopShots(board, shipSizes, topN = 3) {
   candidates.sort((a, b) => b.prob - a.prob);
   return candidates.slice(0, topN);
 }
+
 
 // Sự kiện khi nhấn nút tính toán
 calculateButton.addEventListener("click", () => {
