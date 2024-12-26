@@ -57,18 +57,21 @@ function addCellClickListeners() {
         cell.classList.add("missed");
         cell.classList.remove("hit", "best");
       } else if (board[ row ][ col ] === 1) {
-        board[ row ][ col ] = -1; // Bắn trúng
+        board[ row ][ col ] = -1;
         cell.classList.add("hit");
         cell.classList.remove("missed", "best");
       } else {
-        board[ row ][ col ] = 0; // Reset lại
+        board[ row ][ col ] = 0;
         cell.classList.remove("missed", "hit", "best");
       }
     });
   });
 }
 
+<<<<<<< HEAD
 // Hàm tìm các ô có xác suất cao nhất
+=======
+>>>>>>> cba912d (up)
 function findTopShots(board, remainingShips, topN = 3) {
   const rows = board.length;
   const cols = board[ 0 ].length;
@@ -95,6 +98,7 @@ function findTopShots(board, remainingShips, topN = 3) {
     }
   }
 
+<<<<<<< HEAD
   // Tăng trọng số cho các ô xung quanh các ô bắn trúng
   function addAdjacentProbability(row, col) {
     const directions = [
@@ -114,14 +118,20 @@ function findTopShots(board, remainingShips, topN = 3) {
     }
   }
 
+=======
+>>>>>>> cba912d (up)
   // Thêm xác suất dựa trên các tàu còn lại
   for (const ship of remainingShips) {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
+<<<<<<< HEAD
         if (board[ i ][ j ] === -1) {
           // Nếu bắn trúng, tăng trọng số cho các ô lân cận
           addAdjacentProbability(i, j);
         } else if (board[ i ][ j ] === 0) {
+=======
+        if (board[ i ][ j ] === 0) {
+>>>>>>> cba912d (up)
           // Nếu chưa bắn, tính toán xác suất dựa trên khả năng đặt tàu
           if (canPlaceShip(i, j, ship, true)) addShipProbability(i, j, ship, true);
           if (canPlaceShip(i, j, ship, false)) addShipProbability(i, j, ship, false);
