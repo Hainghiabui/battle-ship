@@ -68,16 +68,11 @@ function addCellClickListeners() {
   });
 }
 
-<<<<<<< HEAD
-// Hàm tìm các ô có xác suất cao nhất
-=======
->>>>>>> cba912d (up)
 function findTopShots(board, remainingShips, topN = 3) {
   const rows = board.length;
   const cols = board[ 0 ].length;
   const probability = Array.from({ length: rows }, () => Array(cols).fill(0));
 
-  // Kiểm tra xem có thể đặt tàu tại vị trí (x, y) với chiều dài và hướng cụ thể không
   function canPlaceShip(x, y, length, isHorizontal) {
     for (let i = 0; i < length; i++) {
       const nx = x + (isHorizontal ? 0 : i);
@@ -89,7 +84,6 @@ function findTopShots(board, remainingShips, topN = 3) {
     return true;
   }
 
-  // Thêm xác suất cho các vị trí có thể đặt tàu
   function addShipProbability(x, y, length, isHorizontal) {
     for (let i = 0; i < length; i++) {
       const nx = x + (isHorizontal ? 0 : i);
@@ -98,40 +92,11 @@ function findTopShots(board, remainingShips, topN = 3) {
     }
   }
 
-<<<<<<< HEAD
-  // Tăng trọng số cho các ô xung quanh các ô bắn trúng
-  function addAdjacentProbability(row, col) {
-    const directions = [
-      [ -1, 0 ], // Trên
-      [ 1, 0 ],  // Dưới
-      [ 0, -1 ], // Trái
-      [ 0, 1 ],  // Phải
-    ];
-
-    for (const [ dx, dy ] of directions) {
-      const nx = row + dx;
-      const ny = col + dy;
-
-      if (nx >= 0 && nx < rows && ny >= 0 && ny < cols && board[ nx ][ ny ] === 0) {
-        probability[ nx ][ ny ] += 10; // Tăng trọng số cao cho ô lân cận
-      }
-    }
-  }
-
-=======
->>>>>>> cba912d (up)
   // Thêm xác suất dựa trên các tàu còn lại
   for (const ship of remainingShips) {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-<<<<<<< HEAD
-        if (board[ i ][ j ] === -1) {
-          // Nếu bắn trúng, tăng trọng số cho các ô lân cận
-          addAdjacentProbability(i, j);
-        } else if (board[ i ][ j ] === 0) {
-=======
         if (board[ i ][ j ] === 0) {
->>>>>>> cba912d (up)
           // Nếu chưa bắn, tính toán xác suất dựa trên khả năng đặt tàu
           if (canPlaceShip(i, j, ship, true)) addShipProbability(i, j, ship, true);
           if (canPlaceShip(i, j, ship, false)) addShipProbability(i, j, ship, false);
